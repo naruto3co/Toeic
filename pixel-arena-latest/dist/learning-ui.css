@@ -1,0 +1,57 @@
+/* Personal learning difficulty and optional combat tiers. */
+.hardword-trigger{display:inline-flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap;color:#efc7aa!important;border-color:#a7867a!important}
+.hardword-trigger>b{font:700 12px/1 monospace}.hardword-trigger>span:first-child{font-size:17px;line-height:1}.hardword-label{font-size:9px}
+.difficulty-picker{flex:none;width:100%;max-width:1050px;margin:0 auto 12px;padding:0 5px}
+.difficulty-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.difficulty-options button{display:flex;justify-content:center;align-items:center;gap:9px;color:#bab5ce;border:1px solid #625475;background:#1c2035;padding:9px 12px;min-height:40px;font-size:12px;box-shadow:2px 2px 0 #070c19}
+.difficulty-options button>b{font:700 13px/1 monospace;letter-spacing:1px}.difficulty-options button.selected{color:#c0f5df;border-color:#a1d8bf;background:#263c3c}.difficulty-options .difficulty-hard.selected{color:#ffdf9c;border-color:#e4bc76;background:#3b3340}.difficulty-options .difficulty-nightmare.selected{color:#ffc3da;border-color:#e0a0c5;background:#3e2b44}
+.difficulty-picker>p{font-size:10px;color:#b8b2ca;line-height:1.4;text-align:center;margin:6px 0 0}
+.difficulty-chip{font-size:8px;letter-spacing:.5px;font-weight:600;border:1px solid #79758d;color:#b9e7d3;padding:2px 6px;margin-left:7px;white-space:nowrap}
+.difficulty-chip.difficulty-hard{color:#ffdc9f;border-color:#a5855e}.difficulty-chip.difficulty-nightmare{color:#f6bddf;border-color:#a477a4}
+.word-memory{display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-size:11px;line-height:1.4;margin:9px 0 0;color:#ffd6bb}
+.word-memory>b{font-size:10px;background:#4a3147;border:1px solid #b387a1;padding:2px 6px;color:#f7d3e6}.word-memory.recovered{color:#b4efcf}.word-memory.review{color:#dfce9e}
+#hard-words-dialog{width:720px;max-width:calc(100% - 28px);padding:22px;background:#181d31;color:#e8e2f6;max-height:calc(var(--game-height,100dvh) - 36px)}
+.hard-words-heading{display:flex;align-items:center;justify-content:space-between;gap:15px}.hard-words-heading h2{font:700 26px/1.2 'Courier New',monospace;letter-spacing:-.7px;margin:7px 0}.hard-words-heading h2 b{font:700 15px/1 monospace;display:inline-grid;place-items:center;min-width:27px;height:27px;border:1px solid #b58b9b;color:#f1c2cf;background:#3b2e43;vertical-align:middle;margin-left:6px}
+#hard-words-dialog .hard-words-heading button{margin:0;padding:6px;min-width:33px;height:33px;background:#272b43;border:1px solid #8a7c9f;color:#ddd8eb;box-shadow:none}
+#hard-words-dialog .hard-words-rule{font-size:12px;line-height:1.7;color:#bcb6d1;margin:14px 0 18px}.hard-words-rule b{color:#f4d4b7}
+#hard-words-list{display:grid;gap:11px}.hard-word-row{display:grid;grid-template-columns:minmax(0,1fr) 140px;gap:16px;padding:16px;background:#23283f;border:1px solid #64566f;box-shadow:2px 2px 0 #0b1022}
+.hard-word-row strong{display:block;color:#f5e7f4;font-size:19px;line-height:1.3;overflow-wrap:anywhere}.hard-word-row>div>span{display:block;font-size:10px;color:#aaa7c1;margin-top:4px}.hard-word-row p{font-size:13px!important;color:#d7e7d9!important;line-height:1.4!important;margin:8px 0 10px}.hard-word-row small{font-size:11px;line-height:1.6;color:#b3b2c7}
+.hard-word-progress{display:flex;flex-direction:column;align-items:flex-end;gap:7px}.hard-word-progress>b{font-size:12px;color:#f0b1c5}.hard-word-progress>span{font-size:10px;color:#c7c3d5}.memory-steps{display:flex;gap:4px;width:95px}.memory-steps i{flex:1;height:6px;background:#4a455e;border:1px solid #776881}.memory-steps i.done{background:#a8e0bd;border-color:#b7f2d6}
+#hard-words-dialog .hard-word-progress button{margin-top:4px;font-size:10px;padding:6px 9px;background:#242e43;color:#b9d6e9;border:1px solid #7c89a8;box-shadow:none}
+.hard-words-empty{text-align:center;padding:25px 10px}.hard-words-empty>span{font-size:40px;color:#b2e9d4}.hard-words-empty h3{font-size:19px;margin:8px 0;color:#e4ecf4}.hard-words-empty p{font-size:12px;color:#b1b6ca}
+#hard-words-dialog .word-source{font-size:10px;line-height:1.5;color:#969bb7;margin:20px 0 0;padding-top:13px;border-top:1px solid #514d67}
+@media(max-width:800px){
+ .hardword-label{display:none}.game-active .t-top .hardword-trigger{min-width:37px;padding:5px;gap:3px}.hardword-trigger>b{font-size:11px}.hardword-trigger>span:first-child{font-size:15px}
+ .game-active .t-top>.arena-tools{gap:4px}.game-active .difficulty-picker{padding:0 3px;margin-bottom:10px}
+ .difficulty-options{gap:6px}.difficulty-options button{font-size:11px;padding:8px 5px;min-height:36px;gap:6px}.difficulty-options button>b{font-size:11px}.difficulty-picker>p{font-size:9px;margin-top:5px}
+ .game-active .word-memory{font-size:10px;margin-top:7px;gap:6px}.word-memory>b{font-size:9px;padding:1px 5px}
+ .game-active .select-intro{padding:9px 0}.game-active .select-intro p{font-size:10px;margin:4px 0}
+ #hard-words-dialog{padding:16px;max-height:calc(var(--game-height,100dvh) - 24px)}.hard-words-heading h2{font-size:23px}.hard-word-row{grid-template-columns:minmax(0,1fr) 105px;padding:12px;gap:10px}.hard-word-row strong{font-size:17px}.hard-word-row small{font-size:10px}.hard-word-row p{font-size:12px!important}.hard-word-progress>b{font-size:11px}.hard-word-progress>span{font-size:9px}.memory-steps{width:84px}
+}
+@media(max-width:800px) and (orientation:portrait) and (max-height:700px){
+ .game-active .select-intro h1{font-size:19px;margin:4px auto}.game-active .select-intro{padding:6px 0}.game-active .select-intro p{display:none}
+ .difficulty-options button{min-height:32px;padding:6px 4px;font-size:10px}.difficulty-picker>p{font-size:8px;line-height:1.3}.game-active .difficulty-picker{margin-bottom:7px}
+ .game-active .hero-choice{padding:6px}.game-active .hero-info{padding-top:5px;gap:1px}.game-active .hero-info>strong{font-size:18px}.game-active .hero-info>small{font-size:9px;line-height:1.3}.game-active .hero-info>b{font-size:10px;line-height:1.3;margin-top:1px}.game-active .hero-info>span{font-size:9px;line-height:1.3}.game-active .hero-info>em{display:none}.game-active .hero-choice-label{font-size:7px;top:5px;right:6px}
+ .game-active .select-bottom{padding-top:8px;gap:7px}.game-active .journey-progress>span{font-size:9px}.game-active .select-bottom>.t-button{min-height:38px;padding:8px;font-size:12px}
+ .game-active .word-memory{font-size:9px;margin-top:5px}
+}
+@media(max-height:500px) and (orientation:landscape){
+ .hardword-label{display:none}.game-active .difficulty-picker{margin-bottom:6px}.difficulty-options button{min-height:29px;padding:5px 7px;font-size:10px}.difficulty-picker>p{font-size:8px;margin-top:4px}.difficulty-options{gap:7px}
+ .game-active .hero-choice{display:grid;grid-template-columns:75px minmax(0,1fr);align-items:center;gap:7px;text-align:left;padding:8px}.game-active .hero-choice-label{position:absolute;top:6px;right:7px;font-size:7px}.game-active .hero-choice>.hero-sprite{width:75px;height:75px;margin:0;grid-row:1}.game-active .hero-info{align-items:flex-start;gap:2px;padding-top:7px}.game-active .hero-info>strong{font-size:18px}.game-active .hero-info>small{font-size:8px;line-height:1.3}.game-active .hero-info>b{font-size:10px;margin-top:1px}.game-active .hero-info>span{font-size:9px;line-height:1.3}.game-active .hero-info>em{display:none}
+ .game-active .word-memory{font-size:9px;margin-top:4px}.game-active .word-memory>b{font-size:8px}.game-active .t-top .hardword-trigger{height:28px;min-width:29px;padding:4px}
+}
+/* Reverse recall and typed cloze prompts never expose the English answer early. */
+.game-active .question-reverse .quiz-copy h2,.game-active .question-cloze .quiz-copy h2{font-size:clamp(19px,2vw,29px);overflow-wrap:anywhere;line-height:1.25}
+.game-active .quiz-copy .cloze-sentence{font-size:18px;line-height:1.55;color:#eee6fb;background:#262a44;border-left:3px solid #c6afe6;padding:12px;margin-top:15px;overflow-wrap:anywhere}
+.game-active .quiz-copy .cloze-translation{font-size:12px;color:#b8bfd2;margin-top:8px}
+.word-entry{display:flex;flex-direction:column;gap:10px;margin-top:auto;min-height:0}.word-entry label{font-size:11px;color:#c8c2da}.word-entry input{width:100%;min-width:0;background:#10182c;color:#f0eaff;border:1px solid #a28dba;outline-offset:3px;padding:13px;font:17px/1.3 system-ui;border-radius:0}.word-entry input:focus{outline:2px solid #b7ead3}.word-entry input::placeholder{color:#86869e}.word-entry small{font-size:10px;color:#9c9eb6}.word-entry .t-button{min-height:42px;font-size:13px}
+@media(max-width:800px){.game-active .quiz-copy .cloze-sentence{font-size:15px;margin-top:10px;padding:9px}.game-active .question-reverse .quiz-copy h2,.game-active .question-cloze .quiz-copy h2{font-size:23px}.word-entry{gap:8px}.word-entry input{padding:11px;font-size:16px}}
+@media(max-height:500px){.game-active .quiz-copy .cloze-sentence{font-size:13px;padding:6px;margin-top:6px}.game-active .quiz-copy .cloze-translation{font-size:10px;line-height:1.3}.game-active .question-reverse .quiz-copy h2,.game-active .question-cloze .quiz-copy h2{font-size:19px;margin-top:6px}.word-entry{gap:5px}.word-entry input{padding:7px}.word-entry .t-button{min-height:30px;padding:6px}.word-entry label,.word-entry small{font-size:9px}}
+@media(max-width:800px) and (orientation:portrait) and (max-height:500px){
+ .game-active:has(.word-entry input:focus) .t-heading,.game-active:has(.word-entry input:focus) .hero-skill{display:none}
+ .game-active:has(.word-entry input:focus) .battle-layout{grid-template-rows:minmax(55px,.35fr) minmax(0,1.65fr);gap:4px}
+ .game-active:has(.word-entry input:focus) .boss-name{padding:4px}.game-active:has(.word-entry input:focus) .boss-name h2{font-size:10px}.game-active:has(.word-entry input:focus) .boss-name .t-kicker,.game-active:has(.word-entry input:focus) .intent,.game-active:has(.word-entry input:focus) .hero-stats{display:none}
+ .game-active:has(.word-entry input:focus) .t-quiz{padding:7px;gap:5px}.game-active:has(.word-entry input:focus) .quiz-copy h2{font-size:17px;margin:3px 0}.game-active:has(.word-entry input:focus) .quiz-copy .cloze-translation,.game-active:has(.word-entry input:focus) .word-entry small{display:none}.game-active:has(.word-entry input:focus) .quiz-copy .cloze-sentence{font-size:12px;line-height:1.35;padding:5px;margin-top:4px}
+}
+.game-active .t-quiz.question-cloze .quiz-copy>p.cloze-sentence,.game-active .t-quiz.question-cloze .quiz-copy>p.cloze-translation{display:block}
+@media(max-width:800px) and (orientation:portrait) and (max-height:500px){.game-active:has(.word-entry input:focus) .t-quiz.question-cloze .quiz-copy>p.cloze-translation{display:none}}

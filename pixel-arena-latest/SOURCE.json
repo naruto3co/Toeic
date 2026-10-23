@@ -1,0 +1,19 @@
+{
+  "name": "Pixel Arena",
+  "site_version": 6,
+  "source_commit": "eb38509f396d6b0d14c2e51029d4352233c73274",
+  "exported_date": "2026-10-23",
+  "source_folders": [
+    "dist",
+    "tests"
+  ],
+  "hosting": "static",
+  "progress_storage": "browser-localStorage",
+  "server_database": false,
+  "additional_files": [
+    "README.md",
+    "compose.yaml",
+    ".env.example",
+    "deploy/"
+  ]
+}

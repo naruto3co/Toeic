@@ -1,0 +1,29 @@
+services:
+  app:
+    build: .
+    image: tung-chut-mot-selfhost:local
+    restart: unless-stopped
+    init: true
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DB_PATH: /data/toeic.sqlite
+    ports:
+      - "127.0.0.1:${APP_PORT:-8081}:3000"
+    volumes:
+      - toeic_data:/data
+    read_only: true
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+volumes:
+  toeic_data:

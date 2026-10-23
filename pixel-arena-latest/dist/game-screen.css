@@ -1,0 +1,113 @@
+/* The game owns the whole viewport in native fullscreen, F11 and mobile play. */
+:root{--arena-bg:#131727}
+#game-app{display:flex;flex-direction:column;width:100%;min-height:100vh;min-height:100dvh}
+body.game-active #game-app,body.game-immersive #game-app{flex:1;min-height:0;height:100%}
+/* Fullscreen promotes this game container, never the html document. Give the
+   promoted element its own size: it no longer participates in body flex sizing. */
+#game-app:fullscreen{display:flex!important;flex-direction:column;position:fixed;inset:0;width:100vw!important;height:100vh!important;height:100dvh!important;min-width:0!important;min-height:0!important;max-width:none!important;max-height:none!important;margin:0!important;padding:0!important;overflow:hidden;background:var(--arena-bg)}
+#game-app:-webkit-full-screen{display:flex!important;flex-direction:column;position:fixed;inset:0;width:100vw!important;height:100vh!important;min-width:0!important;min-height:0!important;max-width:none!important;max-height:none!important;margin:0!important;padding:0!important;overflow:hidden;background:var(--arena-bg)}
+#game-app::backdrop{background:var(--arena-bg)}
+body.game-active,body.game-immersive{height:var(--game-height,100dvh)}
+.screen-toggle{display:inline-flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap;flex:none}
+.screen-toggle svg{display:block;flex:none}.screen-label{font-size:10px}
+.screen-toggle[aria-pressed="true"]{color:#b4f4d7;border-color:#82b7a4}
+.lobby-screenbar{display:flex;justify-content:flex-end;padding-top:12px}
+.lobby-screenbar .screen-toggle{background:#20253c;color:#e4e8f6}
+body.game-immersive{margin:0;display:flex;flex-direction:column;overflow:hidden;background:var(--arena-bg);color:#eaf0ff;color-scheme:dark}
+.game-immersive .demo-header,.game-immersive .demo-context,.game-immersive .demo-footer{display:none}
+body.game-immersive main{max-width:none;width:100%;margin:0;padding:max(10px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));flex:1;min-height:0;display:flex;flex-direction:column}
+body.game-immersive .tactics-shell{border:0;border-radius:0;box-shadow:none;margin:0;padding:8px;height:100%;min-height:0;background:var(--arena-bg)}
+.game-immersive .t-heading{padding:9px 0 12px}
+.game-immersive .battle-layout{grid-template-columns:minmax(0,1.35fr) minmax(350px,1fr);gap:14px}
+.game-immersive .boss-game .boss-visual{max-height:550px}
+.game-immersive .boss-game .hero-visual{max-width:330px}
+.game-immersive .boss-game .spell-card>strong{font-size:clamp(14px,1.2vw,20px)}
+.game-immersive .t-answers{max-height:none}
+.game-immersive .t-answers button{font-size:clamp(14px,1.1vw,18px);padding:12px 16px}
+.game-immersive .demo-lobby-intro{flex:none;padding:20px 0 0}
+.game-immersive .demo-lobby-intro h1{color:#e9e3f8}.game-immersive .demo-lobby-intro p{color:#b6bdd1}
+.game-immersive .tactics-features{flex:1;min-height:0;margin:20px 0 0}
+.game-immersive .tactics-feature{min-height:0}
+.game-immersive .lobby-screenbar{padding:0;flex:none}
+body.game-immersive:has(.demo-lobby-intro) main{overflow:auto}
+dialog{max-height:calc(var(--game-height,100dvh) - 36px);overflow:auto}dialog::backdrop{background:#080c1bd9}
+/* A phone opens directly into the game instead of spending space on site chrome. */
+@media(max-width:800px){
+ body.game-active{background:var(--arena-bg);color-scheme:dark;overscroll-behavior:none}
+ .game-active .demo-header,.game-active .demo-context,.game-active .demo-footer{display:none}
+ body.game-active main,body.game-immersive main{max-width:none;width:100%;margin:0;padding:max(5px,env(safe-area-inset-top)) max(6px,env(safe-area-inset-right)) max(5px,env(safe-area-inset-bottom)) max(6px,env(safe-area-inset-left))}
+ body.game-active .tactics-shell{border:0;border-radius:0;box-shadow:none;padding:5px;margin:0}
+ .game-active .t-top{min-height:37px;gap:5px;padding:0 0 6px}
+ .game-active .t-save{display:none}.game-active .t-top .t-link{font-size:11px;padding:7px 2px;white-space:nowrap}
+ .game-active .t-top>.arena-tools{gap:5px;align-items:center}
+ .game-active .t-top .t-icon{height:34px;min-width:34px;font-size:12px;padding:6px}
+ .game-active .screen-label{display:none}.game-active .sound-controls label{display:none}
+ .game-active .battle-time{font-size:12px;min-width:31px;text-align:center}.game-active .sound-controls{gap:0}
+ .game-active .t-heading{min-height:45px;padding:8px 0}.game-active .t-heading h1{font-size:20px}
+ .game-active .t-heading .t-kicker{font-size:7px}.game-active .t-stage span{height:21px;width:21px}
+ .game-active .hero-skill{padding:5px 7px;min-height:45px}.game-active .hero-skill>.hero-sprite{width:33px}
+ .game-active .hero-skill strong{font-size:12px}.game-active .hero-skill small{font-size:9px}.game-active .hero-skill button{min-height:34px;padding:7px 10px;font-size:11px}
+ .game-active .quiz-copy h2{font-size:27px}.game-active .quiz-copy>span:not(.t-kicker){font-size:11px}
+ .game-active .t-quiz{padding:13px;gap:11px}.game-active .t-answers{max-height:none;gap:8px}
+ .game-active .t-answers button{font-size:14px;min-height:43px;padding:8px 11px;line-height:1.4}
+ .game-active .t-answers button>span{height:23px;width:23px;font-size:11px}
+ .game-active .quiz-copy .t-button{min-height:40px}
+ .game-active .boss-game .spell-card>strong{font-size:14px}.game-active .boss-game .card-type{font-size:9px}.game-active .boss-game .card-effect{font-size:9px}
+ .game-active .hand-footer{font-size:9px}.game-active .t-panel-title h2{font-size:15px}
+ .game-active .t-panel-title .t-button{min-height:36px;font-size:10px}
+ .game-active .hero-choice{padding:10px}.game-active .hero-info>strong{font-size:24px}.game-active .hero-info>small{font-size:11px}.game-active .hero-info>b{font-size:13px}.game-active .hero-info>span{font-size:12px}.game-active .hero-info>em{display:block;font-size:10px}
+ .game-active .hero-choice-label{font-size:9px}.game-active .select-bottom>.t-button{min-height:45px;font-size:14px}
+ .game-active .journey-progress>span{font-size:11px}.game-active .select-intro h1{font-size:23px;max-width:none}
+ .game-active .shop-card strong{font-size:13px}.game-active .shop-card small{font-size:10px}
+ .game-active .launch-row .t-button{min-height:38px;font-size:12px}
+ .game-active .camp .relics button{min-height:48px}
+}
+@media(max-width:800px) and (orientation:portrait){
+ .game-active .battle-layout{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(160px,.85fr) minmax(0,1.6fr);gap:8px}
+ .game-active .boss-game .boss-name{width:54%;padding:7px 8px}.game-active .boss-game .boss-name h2{font-size:14px}
+ .game-active .boss-game .hero-visual{max-width:40%;height:88%;bottom:18px}
+ .game-active .boss-game .boss-visual{height:83%;max-height:none;bottom:27px}
+ .game-active .boss-game .hero-stats{height:42px;padding:5px 8px}.game-active .boss-game .hero-stats strong{font-size:10px}
+ .game-active .boss-game .intent{bottom:49px}.game-active .boss-game .intent strong{font-size:10px}
+ .game-active .boss-game .boss-health>span{font-size:9px}
+ .game-active .robot-controls{padding:11px;gap:7px}.game-active .robot-shop{gap:7px}
+ .game-active .shop-card .robot-art{max-height:58px;max-width:58px}.game-active .shop-card>b{font-size:12px}
+}
+@media(max-width:800px) and (orientation:portrait) and (max-height:700px){
+ .game-active .battle-layout{grid-template-rows:minmax(130px,.7fr) minmax(0,1.75fr);gap:6px}
+ .game-active .t-heading{min-height:37px;padding:5px 0}.game-active .t-heading .t-kicker{display:none}
+ .game-active .hero-skill{min-height:39px;padding:3px 6px}.game-active .hero-skill>.hero-sprite{width:28px}
+ .game-active .t-quiz{padding:10px;gap:7px}.game-active .quiz-copy h2{font-size:24px}.game-active .t-answers{gap:6px}
+ .game-active .t-answers button{font-size:13px;min-height:39px;padding:6px 9px}
+ .game-active .select-intro{padding:9px 0}.game-active .select-intro h1{font-size:21px}
+ .game-active .hero-choice{padding:7px}.game-active .hero-info{padding-top:7px;gap:2px}.game-active .hero-info>strong{font-size:21px}.game-active .hero-info>small{font-size:10px}.game-active .hero-info>b{font-size:12px}.game-active .hero-info>span{font-size:10px}.game-active .hero-info>em{font-size:8px}.game-active .hero-choice-label{font-size:8px}
+ .game-active .select-bottom{padding-top:10px}.game-active .journey-progress>span{font-size:10px}
+ .game-active .boss-game .spell-card>strong{font-size:12px}.game-active .boss-game .card-type{font-size:8px}.game-active .boss-game .card-effect{font-size:8px}
+ .game-active .robot-controls{gap:5px;padding:9px}.game-active .shop-card strong{font-size:12px}.game-active .shop-card small{font-size:9px}
+ .game-active .shop-actions>span{display:none}
+}
+/* Short landscape phones keep the scene and choices beside each other. */
+@media(max-height:500px) and (orientation:landscape){
+ .game-active .screen-label{display:none}.game-active .sound-controls label{display:none}
+ .game-active .t-top{min-height:30px;padding-bottom:4px}.game-active .t-top .t-icon{min-width:28px;height:28px;padding:4px}
+ .game-active .t-heading{min-height:29px;padding:3px 0}.game-active .t-heading h1{font-size:17px}
+ .game-active .battle-layout{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr);gap:8px}
+ .game-active .hero-skill{min-height:32px;padding:2px 5px}.game-active .hero-skill>.hero-sprite{width:25px}.game-active .hero-skill button{min-height:26px;font-size:10px;padding:4px 7px}
+ .game-active .t-quiz{padding:9px;gap:6px}.game-active .quiz-copy h2{font-size:22px}.game-active .t-answers{gap:5px}
+ .game-active .t-answers button{min-height:31px;font-size:12px;padding:4px 8px}.game-active .t-answers button>span{height:18px;width:18px;font-size:9px}
+ .game-active .boss-game .spell-card>strong{font-size:12px}.game-active .boss-game .card-type,.game-active .boss-game .card-effect{font-size:8px}
+ .game-active .hero-info>strong{font-size:19px}.game-active .hero-info>small{font-size:9px}.game-active .hero-info>b{font-size:11px}.game-active .hero-info>span{font-size:10px}.game-active .hero-info>em{font-size:8px}
+ .game-active .hero-choice{padding:6px}.game-active .hero-choice-label{font-size:8px}.game-active .hero-choice>.hero-sprite{max-height:95px}
+ .game-active .select-intro h1{font-size:21px}.game-active .select-bottom>.t-button{min-height:36px;font-size:12px}
+ .game-active .journey-progress>span{font-size:9px}.game-active .shop-card strong{font-size:11px}.game-active .shop-card small{font-size:8px}
+ .game-active .launch-row .t-button{min-height:30px;font-size:10px}
+}
+@media(min-width:801px) and (max-height:500px){body.game-immersive main{padding:5px 8px}}
+@media(max-height:500px) and (orientation:landscape){
+ body.game-active{background:var(--arena-bg);color-scheme:dark}
+ .game-active .demo-header,.game-active .demo-context,.game-active .demo-footer{display:none}
+ body.game-active main{max-width:none;width:100%;margin:0;padding:max(5px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(5px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))}
+ body.game-active .tactics-shell{border:0;border-radius:0;box-shadow:none;padding:5px}
+}
+
+.pause-screenbar{position:absolute;top:12px;right:12px;display:flex}

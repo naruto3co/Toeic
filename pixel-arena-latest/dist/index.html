@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#131727">
+<title>Pixel Arena · Từng chút một</title>
+<meta name="description" content="Chơi thử thẻ bài đánh boss pixel và đội hình robot để nhớ từ vựng TOEIC.">
+<link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/demo.css"><link rel="stylesheet" href="/battle-games.css"><link rel="stylesheet" href="/boss-pixel.css"><link rel="stylesheet" href="/arena-layout.css"><link rel="stylesheet" href="/game-screen.css?v=4"><link rel="stylesheet" href="/learning-ui.css?v=6">
+<script defer src="/data.js"></script><script defer src="/review-engine.js"></script><script defer src="/audio.js"></script><script defer src="/games-engine.js?v=5"></script><script defer src="/word-journey.js?v=5"></script><script defer src="/question-engine.js?v=6"></script><script defer src="/campaign-engine.js?v=6"></script><script defer src="/action-audio.js"></script><script defer src="/battle-engine.js?v=6"></script><script defer src="/game-screen.js?v=4"></script><script defer src="/battle-games.js?v=6"></script><script defer src="/campaign-ui.js?v=6"></script><script defer src="/demo.js?v=6"></script>
+<link rel="stylesheet" href="/campaign.css?v=6">
+</head>
+<body>
+<div id="game-app">
+<header class="demo-header"><a class="demo-brand" href="#games/map"><span class="brand-mark">t.</span><span>Từng chút một<small>PIXEL ARENA / CHƠI MÀ NHỚ</small></span></a><nav aria-label="Chọn game"><button data-demo-mode="map">✦ Bản đồ</button><button data-demo-mode="boss" class="active">⚔ Thẻ bài đánh boss</button><button data-demo-mode="robot">◈ Đội hình robot</button></nav><span class="demo-label">BẢN CHƠI THỬ</span></header>
+<div class="demo-context"><p><span class="status-dot"></span>Vào trận, nhớ từ, mở sức mạnh.</p><div><span><strong id="demo-words">0</strong> /600 từ đã nhớ</span><span><strong id="demo-rounds">0</strong> chiến dịch</span></div></div>
+<main id="main" tabindex="-1"></main>
+<footer class="demo-footer"><span>Demo lưu tiến độ trên trình duyệt này.</span><span>600 từ tự biên soạn · Học từ để mở từng miền đất.</span><button id="demo-help">Cách chơi</button></footer>
+<div id="demo-notice" role="status" aria-live="polite"></div>
+<dialog id="demo-help-dialog" aria-labelledby="help-title"><span class="dialog-kicker">HỌC BẰNG MỘT CHUYẾN PHIÊU LƯU</span><h2 id="help-title">Nhớ từ là sức mạnh.</h2><p><b>Bản đồ:</b> 50 chủ đề, chia thành 5 miền đất. Nhớ đủ 12 từ để hạ boss và mở màn tiếp theo. Mỗi 10 màn mở một trang phục, dùng được cho cả ba nhân vật và các game. Từ đã học ở chế độ khác cũng được tính.</p><p><b>Đánh boss:</b> chọn một thẻ, chọn nghĩa tiếng Việt để kích hoạt phép. Chọn nhân vật trước khi vào trận. Kỹ năng riêng dùng 1 lần mỗi boss. Canh năng lượng, giáp và đòn boss báo trước. Hạ 3 boss để thắng.</p><p><b>Robot:</b> nạp 2 từ để kiếm đồng, tuyển quân và xếp đội hình. Ba robot giống nhau tự ghép lên sao. Kỹ năng nhân vật hồi lại mỗi đợt. Vượt 5 đợt để thắng.</p><p>Từ nhớ đúng ngay được ghi nhận và không ra lại. Từ từng sai được xen kẽ để ôn. Sai từ 2 lần trở lên: đánh dấu khó nhớ, cần đúng 3 lần liên tiếp để ghi nhớ. Thường: Anh → Việt, chọn nghĩa. Thử thách: Việt → Anh, chọn từ. Ác mộng: điền từ hoặc cụm từ tiếng Anh vào câu; không phân biệt chữ hoa, chữ thường. Các trận chiến cũng khó hơn theo mức đã chọn. Trả lời đúng tự chuyển sau 2 giây. Nhấn nút ⛶ để phóng to game, Thu nhỏ hoặc Esc để quay lại. Nếu dùng F11, nhấn F11 lần nữa để thoát. Trên điện thoại, có thể chơi dọc hoặc xoay ngang. Dùng nút Ⅱ để nghỉ; quay lại có thể chơi tiếp ván đã lưu.</p><button id="demo-close-help">Vào trận →</button></dialog>
+<dialog id="hard-words-dialog" aria-labelledby="hard-words-title"><div class="hard-words-heading"><div><span class="dialog-kicker">KHO TỪ CỦA RIÊNG BẠN</span><h2 id="hard-words-title">Từ khó nhớ <b id="hard-words-count">0</b></h2></div><button data-learning="close-hard" class="t-icon" aria-label="Đóng danh sách từ khó">✕</button></div><p class="hard-words-rule">Sai từ <b>2 lần</b> → cần ôn kỹ. Đúng <b>3 lần liên tiếp</b> → đã nhớ. Những từ này được ưu tiên xen kẽ với từ mới trong các trận.</p><div id="hard-words-list"></div><p class="word-source">Học liệu: 600 từ TOEIC, 50 chủ đề, ví dụ và bản dịch tự biên soạn.</p></dialog>
+<noscript><p class="noscript">Bật JavaScript để chơi bản demo.</p></noscript>
+</div>
+</body></html>
