@@ -84,6 +84,20 @@ Luật chơi, cách lưu và hướng dẫn cập nhật: [docs/GAMES.md](docs/G
 
 **v1.3.1:** màn đánh boss chuyển sang pixel art: pháp sư, ba tạo hình boss riêng, đấu trường dưới trăng, sáu hình kỹ năng, khung thẻ/HP kiểu retro và hiệu ứng phép theo từng kỹ năng. Có chế độ giảm chuyển động theo thiết bị. Dùng tiếp hồ sơ và ván đang lưu hiện có; không có thay đổi schema database. Chi tiết ảnh và prompt: [docs/PIXEL-ART.md](docs/PIXEL-ART.md).
 
+## Kiểm tra nguồn đăng nhập (v1.3.2)
+
+Nếu request ghi dữ liệu không có header `Origin`, server kiểm tra origin của `Referer` và chỉ chấp nhận khi trùng chính xác `PUBLIC_ORIGIN`. Nếu có `Origin`, giá trị đó phải hợp lệ và trùng; giá trị rỗng, `null` hoặc khác origin không được dùng Referer để bỏ qua. Request thiếu cả hai bằng chứng hoặc có `Sec-Fetch-Site: cross-site` vẫn bị từ chối. Kiểm tra CSRF, cookie, mật khẩu và database giữ nguyên.
+
+Khi bị từ chối, server ghi một dòng JSON `origin_rejected` chỉ chứa mã lý do và origin; không ghi mật khẩu, cookie, token, đường dẫn hoặc query của Referer. Sau khi thử đăng nhập một lần, xem:
+
+```bash
+sudo docker compose logs --since=3m app | grep origin_rejected
+```
+
+`origin_mismatch` / `referer_mismatch` chỉ ra URL khác cấu hình; `missing_source` là thiếu nguồn có thể kiểm chứng; `invalid_origin` là Origin không hợp lệ; `cross_site` là Fetch Metadata đánh dấu khác site. Đặt `PUBLIC_ORIGIN` đúng giao thức + hostname + cổng và dùng cùng URL trên máy tính, điện thoại. Sau khi sửa `.env`, chạy `sudo docker compose up -d --force-recreate`; sau khi sửa code, chạy `sudo docker compose up -d --build`.
+
+Bản sửa có kiểm tra tự động cho đăng nhập và lưu hồ sơ khi thiếu Origin nhưng Referer hợp lệ, đồng thời kiểm tra các trường hợp bị chặn. Chưa xác minh request từ iPhone của người vận hành, nên không khẳng định mọi lỗi Safari đã được giải quyết. Không cần xóa database hoặc reset tài khoản khi cập nhật.
+
 ## Sao lưu và khôi phục
 
 Tạo snapshot nhất quán ngay cả khi app đang chạy (script dùng SQLite backup API):

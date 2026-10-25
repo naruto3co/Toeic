@@ -17,9 +17,11 @@ sudo docker compose up -d
 
 Mở `http://IP_SERVER:8080`. Xem `pixel-arena-latest/README.md` để đổi cổng, cấu hình proxy và chuyển tiến độ cũ.
 
-## 2. toeic-selfhost — ứng dụng có backend/database, phiên bản 1.3.1
+## 2. toeic-selfhost — ứng dụng có backend/database, phiên bản 1.3.2
 
 Có backend Node.js, database SQLite, tài khoản đăng ký/đăng nhập, hồ sơ lưu trên server, trang admin, flashcard, bài luyện, ghép thẻ 8×8, robot, thẻ bài đánh boss pixel và công cụ sao lưu / tạo admin.
+
+Bản 1.3.2 bổ sung kiểm tra Referer cùng origin nếu request thiếu Origin và ghi log chẩn đoán khi nguồn bị từ chối; vẫn giữ kiểm tra Origin/CSRF. URL mở trên máy tính và điện thoại phải trùng `PUBLIC_ORIGIN`. Chưa xác minh request trên iPhone thực tế; xem hướng dẫn `origin_rejected` trong README của backend.
 
 **Bản này cũ hơn giao diện Pixel Arena ở trên:** chưa có bản đồ 50 màn, các mức câu hỏi mới, cơ chế từ khó và các sửa giao diện/fullscreen mới nhất của demo. Các cập nhật đó chưa được ghép vào backend; không ghi đè các file demo vào `public/` rồi coi là đã tích hợp.
 
@@ -52,4 +54,4 @@ Từ thư mục gốc của bộ mã nguồn:
 sha256sum -c SHA256SUMS.txt
 ```
 
-`MANIFEST.json` ghi số file và dung lượng. Các file ZIP và TAR.GZ được giải nén thử và đối chiếu checksum trước khi gửi.
+`MANIFEST.json` ghi số file và dung lượng nguồn (không tính chính manifest và danh sách checksum). Sau khi chỉnh sửa mã, cần cập nhật danh sách checksum tương ứng.

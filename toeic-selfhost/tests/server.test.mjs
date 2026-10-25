@@ -13,7 +13,7 @@ async function fixture(options={}){
  const directory=mkdtempSync(join(tmpdir(),'toeic-test-')),dbPath=join(directory,'test.sqlite'),app=await createApp({dbPath,publicOrigin:origin,secureCookies:true,...options});
  const admin=createUser(app.db,{username:'admin',displayName:'Admin',passwordHash:await hashPassword(password),role:'admin',mustChange:false});
  await new Promise(resolve=>app.server.listen(0,'127.0.0.1',resolve));const base='http://127.0.0.1:'+app.server.address().port;
- async function call(path,{method='GET',body,cookie='',csrf='',headers={}}={}){const res=await fetch(base+path,{method,headers:{Origin:origin,'Content-Type':'application/json',...(cookie?{Cookie:cookie}:{}),...(csrf?{'X-CSRF-Token':csrf}:{}),...headers},...(body===undefined?{}:{body:JSON.stringify(body)})});return {status:res.status,body:await res.json(),headers:res.headers};}
+ async function call(path,{method='GET',body,cookie='',csrf='',headers={}}={}){const requestHeaders={Origin:origin,'Content-Type':'application/json',...(cookie?{Cookie:cookie}:{}),...(csrf?{'X-CSRF-Token':csrf}:{}),...headers};for(const key of Object.keys(requestHeaders))if(requestHeaders[key]===undefined)delete requestHeaders[key];const res=await fetch(base+path,{method,headers:requestHeaders,...(body===undefined?{}:{body:JSON.stringify(body)})});return {status:res.status,body:await res.json(),headers:res.headers};}
  async function login(username='admin',value=password){const result=await call('/api/auth/login',{method:'POST',body:{username,password:value}});return {...result,cookie:result.headers.get('set-cookie')?.split(';')[0],csrf:result.body.csrf};}
  const auth=(session,method,body)=>({method,body,cookie:session.cookie,csrf:session.csrf});
  return {...app,directory,dbPath,call,login,auth,admin,async cleanup(){await app.close();rmSync(directory,{recursive:true,force:true});}};
@@ -162,5 +162,29 @@ test('robot and boss campaigns persist through API and old clients, stay private
   for(const name of ['robots-v1.png','arena-v1.png','pixel-crystal-v1.png','pixel-ember-v1.png','pixel-eclipse-v1.png','pixel-hero-v1.png','pixel-arena-v1.png','pixel-spells-v1.png']){const res=await fetch(base+'/assets/'+name);assert.equal(res.status,200);assert.equal(res.headers.get('content-type'),'image/png');assert.ok((await res.arrayBuffer()).byteLength>1000);}
   for(const path of ['/assets/server/app.mjs','/assets/%2e%2e%2fserver%2fapp.mjs','/data/toeic.sqlite'])assert.equal((await fetch(base+path)).status,404);
   const reset=await f.call('/api/profile/state',f.auth(admin,'PUT',{state:emptyProgress(),revision:2,mutation:'api-battles-reset-01'}));assert.equal(reset.status,200);assert.deepEqual(reset.body.state.battleDrafts,{robot:null,boss:null});
+ }finally{await f.cleanup();}
+});
+
+
+test('Origin-less same-origin login and profile writes work via Referer, while unsafe requests stay blocked',async()=>{
+ const f=await fixture();try{
+  const body={username:'admin',password};
+  const login=await f.call('/api/auth/login',{method:'POST',body,headers:{Origin:undefined,Referer:origin+'/?from=iphone','Sec-Fetch-Site':'same-origin'}});
+  assert.equal(login.status,200);const cookie=login.headers.get('set-cookie').split(';')[0],csrf=login.body.csrf;
+  assert.match(login.headers.get('set-cookie'),/HttpOnly.*SameSite=Strict.*Secure/);
+  for(const headers of [
+   {Origin:undefined},
+   {Origin:undefined,Referer:'https://evil.example/'},
+   {Origin:'null',Referer:origin+'/'},
+   {Origin:'https://evil.example',Referer:origin+'/'},
+   {Origin:origin,Referer:origin+'/','Sec-Fetch-Site':'cross-site'},
+   {Origin:undefined,Referer:origin+'.evil.example/'}
+  ])assert.equal((await f.call('/api/auth/login',{method:'POST',body,headers})).status,403);
+  const headers={Origin:undefined,Referer:origin+'/'};
+  assert.equal((await f.call('/api/profile/state',{method:'PUT',cookie,headers,body:{revision:0,mutation:'iphone-save-0001',state:emptyProgress()}})).status,403);
+  const next=emptyProgress();next.saved=['1-0'];
+  assert.equal((await f.call('/api/profile/state',{method:'PUT',cookie,csrf,headers,body:{revision:0,mutation:'iphone-save-0001',state:next}})).status,200);
+  assert.deepEqual((await f.call('/api/profile/state',{cookie})).body.state.saved,['1-0']);
+  assert.equal((await f.call('/api/profile/state',{method:'PUT',cookie,csrf,headers:{Origin:undefined,Referer:'https://evil.example/'},body:{revision:1,mutation:'iphone-save-0002',state:emptyProgress()}})).status,403);
  }finally{await f.cleanup();}
 });
