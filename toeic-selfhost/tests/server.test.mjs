@@ -178,6 +178,8 @@ test('robot and boss campaigns persist through API and old clients, stay private
   await f.call('/api/auth/register',{method:'POST',body:{username:'battle_student',displayName:'Player',password,confirmPassword:password}});const other=await f.login('battle_student');assert.deepEqual(other.body.state.battleDrafts,{robot:null,boss:null});
   const invalid=structuredClone(state);invalid.battleDrafts.boss.hand[0]=99;assert.equal((await f.call('/api/profile/state',f.auth(admin,'PUT',{state:invalid,revision:2,mutation:'api-battles-invalid-1'}))).status,400);
   const base='http://127.0.0.1:'+f.server.address().port;
+  const page=await (await fetch(base+'/')).text();assert.match(page,/src="\/game-screen\.js"/);assert.match(page,/href="\/game-screen\.css"/);
+  for(const file of ['game-screen.js','game-screen.css']){const res=await fetch(base+'/'+file);assert.equal(res.status,200);assert.ok((await res.text()).length>1000);}
   for(const name of ['robots-v1.png','arena-v1.png','pixel-crystal-v1.png','pixel-ember-v1.png','pixel-eclipse-v1.png','pixel-hero-v1.png','pixel-arena-v1.png','pixel-spells-v1.png']){const res=await fetch(base+'/assets/'+name);assert.equal(res.status,200);assert.equal(res.headers.get('content-type'),'image/png');assert.ok((await res.arrayBuffer()).byteLength>1000);}
   for(const path of ['/assets/server/app.mjs','/assets/%2e%2e%2fserver%2fapp.mjs','/data/toeic.sqlite'])assert.equal((await fetch(base+path)).status,404);
   const reset=await f.call('/api/profile/state',f.auth(admin,'PUT',{state:emptyProgress(),revision:2,mutation:'api-battles-reset-01'}));assert.equal(reset.status,200);assert.deepEqual(reset.body.state.battleDrafts,{robot:null,boss:null});

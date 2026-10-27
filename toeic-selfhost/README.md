@@ -98,6 +98,15 @@ sudo docker compose logs --since=3m app | grep origin_rejected
 
 Bản sửa có kiểm tra tự động cho đăng nhập và lưu hồ sơ khi thiếu Origin nhưng Referer hợp lệ, đồng thời kiểm tra các trường hợp bị chặn. Chưa xác minh request từ iPhone của người vận hành, nên không khẳng định mọi lỗi Safari đã được giải quyết. Không cần xóa database hoặc reset tài khoản khi cập nhật.
 
+## Toàn màn hình cho hai game chiến thuật (v1.3.4)
+
+- **Biệt đội Neon** và **Long Vương Nhật Thực** đều có nút **Toàn màn hình** ở thanh công cụ trong trận. Trên máy tính có thể dùng F11; Esc thoát chế độ mở rộng/native, còn toàn màn hình do trình duyệt F11 điều khiển thì dùng F11 để thoát.
+- Chỉ phần game chiếm màn hình khi mở rộng; thanh bên, thanh trên và chân trang được ẩn. Thoát trận, đổi mục học hoặc đăng xuất sẽ khôi phục giao diện web.
+- Fullscreen dùng phần tử ứng dụng cố định, không dùng khung trận bị thay mỗi khi trả lời/chuyển lượt. Nếu API không hỗ trợ, bị từ chối hoặc trình xem nhúng không cho toàn màn hình, game vẫn mở rộng trong vùng nhìn hiện có.
+- Điện thoại tự chuyển sang bố cục vừa vùng nhìn: màn hình dọc xếp cảnh và lựa chọn theo chiều dọc; màn hình ngang đặt cạnh nhau. Chiều cao được cập nhật khi đổi hướng/thanh trình duyệt thay đổi, có chừa vùng tai thỏ. Nội dung giải thích/kết quả quá dài cuộn trong bảng riêng.
+- Đã kiểm tra giao diện trong trình duyệt với các vùng nhìn 390×844, 375×667 và 844×390. Chưa kiểm tra trên iPhone/Safari vật lý; vùng nhìn mở rộng không thể ẩn thanh trình duyệt nếu thiết bị không hỗ trợ Fullscreen API.
+- Sau khi cập nhật mã, chạy `sudo docker compose up -d --build` trong đúng thư mục đang triển khai rồi tải lại trang. Giữ nguyên `.env`, cấu hình Compose và volume dữ liệu. Phiên đăng nhập 365 ngày của bản 1.3.3 vẫn được giữ.
+
 ## Phiên đăng nhập một năm (v1.3.3)
 
 - Phiên mới có hạn **365 ngày** (31.536.000 giây), áp dụng cho cả học viên và admin. Hạn tính từ lúc đăng nhập, không tự kéo dài mỗi lần mở trang.

@@ -4,10 +4,10 @@ Hai ứng dụng độc lập để học từ vựng TOEIC. Xem [hướng dẫn
 
 | Thư mục | Phiên bản | Hồ sơ học tập |
 | --- | --- | --- |
-| [`toeic-selfhost/`](toeic-selfhost/README.md) | 1.3.3 | Tài khoản, SQLite, admin, đồng bộ trên server |
+| [`toeic-selfhost/`](toeic-selfhost/README.md) | 1.3.4 | Tài khoản, SQLite, admin, đồng bộ trên server |
 | [`pixel-arena-latest/`](pixel-arena-latest/README.md) | Demo Sites 6 | localStorage từng trình duyệt; chưa có tài khoản/database |
 
-Demo có bản đồ và giao diện mới nhất; các cập nhật đó chưa được ghép vào backend. Nội dung gồm 600 từ tự biên soạn theo 50 chủ đề TOEIC.
+Demo có bản đồ 50 màn, các mức câu hỏi và cơ chế từ khó mới chưa được ghép vào backend. Backend 1.3.4 đã có toàn màn hình và bố cục điện thoại cho hai game chiến thuật. Nội dung gồm 600 từ tự biên soạn theo 50 chủ đề TOEIC.
 
 ## Cài mới bản có tài khoản và database
 
@@ -32,6 +32,10 @@ sudo docker compose up -d --build
 
 Không cần tạo lại tài khoản. Chuyển sang thư mục/project Compose khác có thể dùng volume mới; không dùng `docker compose down -v` khi cần giữ dữ liệu.
 
+## Hai game chiến thuật toàn màn hình (1.3.4)
+
+Vào trận robot hoặc đánh boss rồi bấm **Toàn màn hình**, hoặc dùng F11 trên máy tính. Điện thoại tự co bố cục vừa vùng nhìn dọc/ngang; nếu trình duyệt không hỗ trợ Fullscreen API, game dùng chế độ mở rộng trong trang. Thoát trận hoặc đổi mục học sẽ khôi phục giao diện web.
+
 ## Phiên đăng nhập 365 ngày (1.3.3)
 
 Phiên mới giữ đăng nhập tối đa 365 ngày, tính từ lần đăng nhập. Sau khi cập nhật, đăng xuất rồi đăng nhập lại một lần để nhận hạn mới. Phiên cũ giữ hạn cũ; đăng xuất, đổi/reset mật khẩu, khóa tài khoản hoặc thu hồi phiên vẫn kết thúc phiên ngay.
@@ -50,4 +54,4 @@ Log chỉ chứa mã lý do và origin, không chứa mật khẩu/cookie/token.
 
 ## Kiểm tra mã nguồn
 
-Node.js 24.11 trở lên trong nhánh 24.x: chạy `npm test` từ từng thư mục ứng dụng. Backend có 44 kiểm tra, demo có 37 kiểm tra. Docker/Nginx chưa được chạy thử trong môi trường chuẩn bị mã.
+Node.js 24.11 trở lên trong nhánh 24.x: chạy `npm test` từ từng thư mục ứng dụng. Backend có 55 kiểm tra, demo có 37 kiểm tra. Docker/Nginx chưa được chạy thử trong môi trường chuẩn bị mã.

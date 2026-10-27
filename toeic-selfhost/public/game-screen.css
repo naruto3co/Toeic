@@ -1,0 +1,192 @@
+/* One stable app element owns fullscreen; battle contents may re-render safely. */
+.screen-toggle{display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}
+.screen-toggle svg{display:block;flex:none}.screen-label{font-size:10px}
+.screen-toggle[aria-pressed="true"]{color:#b4f4d7;border-color:#82b7a4}
+body.battle-playing{height:var(--game-height,100dvh);overflow:hidden}
+.battle-playing #study-app{height:100%;min-height:0}
+.battle-playing .content-shell{display:flex;flex-direction:column;min-height:0;height:100%}
+.battle-playing .topbar{height:52px;min-height:52px;flex:none;padding:0 22px}
+.battle-playing .footer{display:none}
+.battle-playing #main{flex:1;min-height:0;width:100%;max-width:none;padding:12px 16px;margin:0;overflow:hidden}
+.battle-playing .tactics-shell{display:grid;grid-template-rows:auto auto minmax(0,1fr);height:100%;min-height:0;padding:14px;margin:0;border-radius:12px;box-shadow:none}
+.battle-playing .t-top{padding-bottom:9px;gap:8px}
+.battle-playing .t-top>div{align-items:center;gap:6px}
+.battle-playing .t-heading{padding:10px 0;min-height:55px}
+.battle-playing .t-heading h1{font-size:23px;margin:3px 0 0}
+.battle-playing .t-heading .t-kicker{font-size:8px}
+.battle-layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,1fr);gap:12px;min-height:0;min-width:0;overflow:hidden}
+.battle-layout>.t-arena{height:100%;min-height:0!important;min-width:0}
+.battle-layout>.battle-deck{min-height:0;min-width:0;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#776496 #131727;padding:0 3px 4px 0}
+.battle-deck>.t-panel,.battle-deck>.t-quiz{margin:0;min-height:100%;box-sizing:border-box}
+.battle-deck>.t-panel{padding:15px 13px}
+.battle-deck .t-quiz{display:flex;flex-direction:column;justify-content:center;padding:15px;gap:13px}
+.battle-deck .quiz-copy h2{font-size:28px;margin:7px 0 4px}
+.battle-deck .quiz-copy>p{margin:7px 0}
+.battle-deck .quiz-copy blockquote{margin:8px 0;line-height:1.5}
+.battle-deck .quiz-copy .t-button{margin-top:8px}
+.battle-deck .t-answers{gap:8px;flex:none}
+.battle-deck .t-answers button{min-height:43px;padding:9px 11px;font-size:13px}
+.battle-playing .robot-arena{display:flex;flex-direction:column}
+.battle-playing .robot-field{flex:1;min-height:0!important;padding:12px;overflow:hidden}
+.battle-playing .formation{max-width:300px}.battle-playing .enemy-formation{max-width:210px}
+.battle-playing .formation-grid{gap:6px}
+.battle-playing .arena-caption,.battle-playing .arena-bottom{flex:none;padding:11px 10px;letter-spacing:.2px}
+.battle-playing .arena-caption b{font-size:8px}
+.battle-deck .t-panel-title h2{font-size:17px}
+.battle-deck .synergy-row{margin:10px 0;gap:5px}
+.battle-deck .synergy-row>span{font-size:9px;padding:5px 6px}
+.battle-deck .synergy-row small{display:block;margin:2px 0 0;font-size:8px}
+.battle-deck .shop-card{flex-direction:column;justify-content:center;text-align:center;padding:8px 5px 28px;min-height:110px}
+.battle-deck .shop-card .robot-art{width:clamp(42px,6vw,72px)}
+.battle-deck .shop-card strong{font-size:12px}.battle-deck .shop-card small{font-size:8px;margin-top:3px}
+.battle-deck .shop-actions{gap:6px}.battle-deck .shop-actions>span{font-size:9px}
+.battle-deck .launch-row{gap:8px;padding-top:10px;margin-top:8px}
+.battle-deck .launch-row .t-button{padding:10px 12px;font-size:12px}
+.battle-deck .combat-note,.battle-deck .report{flex-direction:column;text-align:center;justify-content:center}
+.battle-deck .hand-panel{display:flex;flex-direction:column;gap:8px}
+.battle-deck .hand-instruction{margin:0!important;font-size:11px!important}
+.battle-deck .spell-hand{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;overflow:visible;padding:7px 4px;flex:1;min-height:0;align-content:center}
+.battle-deck .spell-card{width:100%;max-width:none;min-height:0;flex:none;padding:9px 5px;box-shadow:none}
+.battle-deck .card-illustration{margin:3px 0 7px}
+.battle-deck .card-type{font-size:8px!important;min-height:24px;margin-left:5px}
+.battle-deck .spell-card>strong{font-size:12px!important}.battle-deck .spell-card>small{font-size:9px;margin:4px 0 7px}
+.battle-deck .card-effect{font-size:9px!important;padding-top:6px;min-height:34px}
+.battle-deck .hand-footer{margin:0;font-size:9px!important;gap:6px}
+.battle-deck .hand-panel .t-panel-title{gap:6px}.battle-deck .hand-panel .t-panel-title h2{font-size:15px}
+.battle-deck .hand-panel .t-panel-title .t-button{padding:9px 10px;font-size:10px}
+.battle-playing .boss-game .boss-name{width:54%;max-width:310px;padding:9px;right:9px;top:9px}
+.battle-playing .boss-game .boss-name h2{font-size:16px}
+.battle-playing .boss-game .hero-visual{width:37%;left:1%;bottom:72px;max-width:300px}
+.battle-playing .boss-game .boss-visual,.battle-playing .boss-game .stage-2 .boss-visual,.battle-playing .boss-game .stage-3 .boss-visual{height:65%;width:54%;bottom:72px;right:1%;object-fit:contain}
+.battle-playing .boss-game .hero-stats{height:61px;padding:8px 10px;gap:8px}
+.battle-playing .boss-game .hero-stats small{font-size:7px}.battle-playing .boss-game .hero-stats strong{font-size:10px}
+.battle-playing .boss-game .hero-stats strong span{font-size:8px}
+.battle-playing .boss-game .intent{bottom:72px;right:9px;padding:7px 9px}
+.battle-playing .boss-game .intent strong{font-size:10px}
+.battle-playing .boss-game .cast-banner{bottom:72px;left:3%;max-width:55%;font-size:11px;padding:7px}
+.battle-playing .boss-game .mana b{font-size:18px;letter-spacing:2px}
+.battle-playing .boss-game .mana small{font-size:8px}.battle-playing .boss-game .turn-counter{font-size:9px}
+.battle-layout.battle-complete{display:block;overflow:auto;scrollbar-width:thin}
+.battle-complete .battle-result{min-height:100%;margin:0}
+.pause-screenbar{position:absolute;inset:12px 12px auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+body.battle-immersive{background:#131727;color-scheme:dark}
+.battle-immersive .sidebar,.battle-immersive .topbar{display:none!important}
+.battle-immersive .content-shell{margin:0!important;width:100%}
+.battle-immersive #main{padding:max(6px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(6px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))}
+.battle-immersive .tactics-shell{border:0;border-radius:0;background:#131727;padding:8px}
+#study-app:fullscreen{position:fixed;inset:0;display:flex!important;width:100vw!important;height:100vh!important;height:100dvh!important;min-width:0!important;min-height:0!important;max-width:none!important;max-height:none!important;margin:0!important;padding:0!important;overflow:hidden;background:#131727}
+#study-app:-webkit-full-screen{position:fixed;inset:0;display:flex!important;width:100vw!important;height:100vh!important;height:100dvh!important;min-width:0!important;min-height:0!important;max-width:none!important;max-height:none!important;margin:0!important;padding:0!important;overflow:hidden;background:#131727}
+#study-app::backdrop{background:#131727}
+@media(min-width:1100px){.battle-immersive .battle-layout{grid-template-columns:minmax(0,1.35fr) minmax(380px,1fr)}}
+@media(max-width:1100px){.battle-playing .t-save{display:none}.battle-playing .screen-label{display:none}}
+@media(max-width:800px){
+ .battle-playing .sidebar,.battle-playing .topbar{display:none!important}
+ .battle-playing .content-shell{margin:0;width:100%}
+ .battle-playing #main{padding:max(4px,env(safe-area-inset-top)) max(5px,env(safe-area-inset-right)) max(4px,env(safe-area-inset-bottom)) max(5px,env(safe-area-inset-left))}
+ .battle-playing{background:#131727;color-scheme:dark;overscroll-behavior:none}
+ .battle-playing .tactics-shell{padding:5px;border:0;border-radius:0}
+ .battle-playing .t-top{padding-bottom:5px;gap:4px;min-height:36px}
+ .battle-playing .t-top>.t-link{font-size:11px;padding:6px 2px;white-space:nowrap}
+ .battle-playing .t-top>div{gap:4px}.battle-playing .t-top .t-icon{min-height:33px;min-width:33px;padding:5px;font-size:12px}
+ .battle-playing .battle-time{font-size:11px;margin-right:2px;white-space:nowrap}
+ .battle-playing .t-heading{padding:6px 0;min-height:43px;gap:8px}
+ .battle-playing .t-heading h1{font-size:19px!important;margin:2px 0 0}
+ .battle-playing .t-heading .t-kicker{font-size:7px!important;letter-spacing:.8px}
+ .battle-playing .t-stage{gap:4px}.battle-playing .t-stage span{width:20px;height:20px;font-size:9px;border-width:1px}
+ .battle-deck>.t-panel,.battle-deck .t-quiz{padding:11px;gap:9px}
+ .battle-deck .quiz-copy h2{font-size:26px}.battle-deck .quiz-copy>p{font-size:11px;margin:5px 0}
+ .battle-deck .quiz-copy blockquote{font-size:10px;margin:6px 0}
+ .battle-deck .t-answers button{min-height:42px;font-size:13px;padding:8px 10px}
+ .battle-deck .t-answers{gap:7px}.battle-deck .quiz-copy .t-button{min-height:38px;padding:8px 10px}
+ .battle-deck .spell-hand{gap:6px;padding:7px 3px}
+ .battle-deck .spell-card{padding:9px 4px}
+ .battle-deck .spell-card>strong{font-size:11px!important}
+ .battle-deck .card-type{font-size:7px!important}.battle-deck .card-effect{font-size:8px!important;min-height:31px}
+ .battle-deck .card-cost{width:22px!important;height:24px!important;font-size:13px!important;border-width:1px!important;top:-4px!important;left:-3px!important}
+ .battle-deck .shop-card{min-height:97px}.battle-deck .shop-card .robot-art{width:53px}
+ .battle-deck .shop-card strong{font-size:11px}.battle-deck .shop-card small{font-size:8px}
+ .battle-deck .launch-row p{font-size:10px}.battle-deck .launch-row p span{font-size:9px}
+ .battle-deck .t-panel-title h2{font-size:16px}.battle-deck .synergy-row{margin:7px 0}
+ .battle-deck .shop-actions>span{display:none}.battle-deck .shop-actions .t-link{font-size:10px}
+ .battle-playing .arena-caption,.battle-playing .arena-bottom{padding:7px 8px;font-size:8px}
+ .battle-playing .robot-field{padding:6px}.battle-playing .formation{max-width:190px}
+ .battle-playing .formation-grid{gap:4px}.battle-playing .field-label{font-size:6px;padding:0 2px 4px}
+ .battle-playing .boss-game .boss-name{width:55%;padding:6px;top:6px;right:6px;border-width:1px}
+ .battle-playing .boss-game .boss-name h2{font-size:13px;margin:3px 0 5px}
+ .battle-playing .boss-game .boss-name .t-kicker{font-size:6px}.battle-playing .boss-game .boss-health>span{font-size:8px}
+ .battle-playing .boss-game .hero-visual{bottom:49px;width:34%}
+ .battle-playing .boss-game .boss-visual,.battle-playing .boss-game .stage-2 .boss-visual,.battle-playing .boss-game .stage-3 .boss-visual{height:62%;width:53%;bottom:49px}
+ .battle-playing .boss-game .hero-stats{height:43px;padding:5px 7px}
+ .battle-playing .boss-game .hero-stats small{font-size:6px;margin-bottom:3px}.battle-playing .boss-game .hero-stats strong{font-size:9px;margin-top:3px}
+ .battle-playing .boss-game .hero-stats strong span{display:inline;font-size:7px;margin:0 0 0 3px}
+ .battle-playing .boss-game .intent{bottom:51px;padding:5px 7px;border-width:1px}
+ .battle-playing .boss-game .intent span{font-size:6px;margin-bottom:2px}.battle-playing .boss-game .intent strong{font-size:8px}
+ .battle-playing .boss-game .cast-banner{bottom:50px;padding:5px;font-size:9px;border-width:1px}
+ .battle-playing .boss-game .mana b{font-size:15px}.battle-playing .boss-game .mana small{font-size:7px;margin:3px 0 0}
+ .battle-playing .boss-game .turn-counter{font-size:8px}
+}
+@media(max-width:800px) and (orientation:portrait){
+ .battle-layout{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(145px,.8fr) minmax(0,1.35fr);gap:7px}
+ .battle-playing .boss-game .hero-visual{max-width:125px;height:65%;object-fit:contain}
+ .battle-deck .hand-panel{gap:7px}.battle-deck .hand-panel .t-panel-title h2{font-size:14px}
+ .battle-deck .hand-footer{font-size:8px!important}
+}
+@media(max-height:700px) and (orientation:portrait){
+ .battle-playing .t-heading .t-kicker{display:none}.battle-playing .t-heading{min-height:31px;padding:4px 0}
+ .battle-layout{grid-template-rows:minmax(120px,.65fr) minmax(0,1.45fr)}
+ .battle-deck .t-quiz{gap:7px;padding:10px}.battle-deck .t-answers{gap:5px}
+ .battle-deck .t-answers button{min-height:38px;padding:6px 9px;font-size:12px}
+ .battle-deck .quiz-copy h2{font-size:24px;margin:4px 0}
+ .battle-deck .card-illustration{max-height:60px;width:100%;aspect-ratio:1}
+ .battle-deck .shop-card{min-height:89px}.battle-deck .shop-card .robot-art{width:43px}
+ .battle-deck .synergy-row small{display:none}.battle-deck .t-help{margin-top:6px}
+}
+@media(max-height:500px) and (orientation:landscape){
+ body.battle-playing{background:#131727;color-scheme:dark}
+ .battle-playing .sidebar,.battle-playing .topbar{display:none!important}.battle-playing .content-shell{margin:0}
+ .battle-playing #main{padding:4px 6px}.battle-playing .tactics-shell{padding:4px;border:0;border-radius:0}
+ .battle-playing .screen-label,.battle-playing .t-save,.battle-playing .t-heading .t-kicker{display:none}
+ .battle-playing .t-top{min-height:29px;padding-bottom:3px}.battle-playing .t-top .t-icon{min-height:28px;min-width:28px;padding:4px}
+ .battle-playing .t-heading{min-height:28px;padding:3px 0}.battle-playing .t-heading h1{font-size:17px!important}
+ .battle-layout{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr);gap:7px}
+ .battle-deck>.t-panel,.battle-deck .t-quiz{padding:9px;gap:6px}
+ .battle-deck .quiz-copy h2{font-size:23px;margin:4px 0}.battle-deck .quiz-copy>p{font-size:10px;margin:3px 0}
+ .battle-deck .t-answers{gap:4px}.battle-deck .t-answers button{min-height:30px;padding:4px 7px;font-size:12px}
+ .battle-deck .t-answers button>span{width:19px;height:19px;font-size:9px}
+ .battle-deck .t-panel-title h2{font-size:14px}.battle-deck .synergy-row{margin:5px 0}
+ .battle-deck .synergy-row small,.battle-deck .launch-row p,.battle-deck .robot-controls>.t-help{display:none}
+ .battle-deck .shop-card{min-height:85px;padding-top:3px}.battle-deck .shop-card .robot-art{width:38px}
+ .battle-deck .shop-card small{font-size:7px}.battle-deck .shop-card strong{font-size:10px}
+ .battle-deck .shop-actions{margin-top:3px}.battle-deck .shop-actions .t-link{padding:3px;font-size:9px}
+ .battle-deck .launch-row{padding-top:5px;margin-top:4px;justify-content:flex-end}
+ .battle-deck .launch-row .t-button{min-height:30px;padding:6px 9px;font-size:11px}
+ .battle-deck .spell-hand{gap:5px}.battle-deck .card-illustration{max-height:64px;aspect-ratio:1}
+ .battle-deck .hand-instruction{font-size:9px!important}.battle-deck .hand-footer{font-size:8px!important}
+ .battle-deck .hand-panel .t-panel-title h2{font-size:13px}
+}
+
+/* Keep every formation cell inside a short phone arena. */
+.battle-playing .formation{height:100%;max-height:360px;display:flex;flex-direction:column;justify-content:center;min-height:0}
+.battle-playing .field-label{flex:none}
+.battle-playing .formation-grid{grid-template-rows:repeat(2,minmax(0,1fr));min-height:0;flex:1}
+.battle-playing .unit-slot{aspect-ratio:auto;min-height:0}
+.battle-playing .unit-slot .robot-art{top:0;left:50%;height:90%;width:auto;max-width:100%;aspect-ratio:1;transform:translateX(-50%)}
+.battle-playing .enemy-formation{height:100%;max-height:320px;grid-auto-rows:minmax(0,1fr);min-height:0}
+.battle-playing .enemy-formation .t-fighter{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:0;padding:0}
+.battle-playing .enemy-formation .robot-art{height:calc(100% - 28px);width:auto;max-width:100%;aspect-ratio:1;margin:0;flex-shrink:1;min-height:12px}
+.battle-playing .enemy-formation .t-hp{width:85%;flex:none}
+.battle-playing .enemy-formation .robot-art{width:56px;height:56px;flex:none;min-height:0}
+.battle-playing .unit-slot .robot-art{width:48px;height:48px}
+@supports(width:1cqh){
+ .battle-playing .unit-slot,.battle-playing .enemy-formation{container-type:size}
+ .battle-playing .unit-slot .robot-art{--bot-size:min(100cqw,80cqh);width:var(--bot-size);height:var(--bot-size)}
+ .battle-playing .enemy-formation .robot-art{--bot-size:min(110px,max(24px,calc(50cqw - 5px)),max(24px,calc(50cqh - 28px)));width:var(--bot-size);height:var(--bot-size)}
+}
+@media(max-width:450px) and (orientation:portrait){
+ .battle-deck .spell-hand{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;align-content:center}
+ .battle-deck .spell-card{padding:6px 5px}.battle-deck .card-type{font-size:8px!important;min-height:18px}
+ .battle-deck .card-illustration{height:38px;max-height:38px;aspect-ratio:auto;margin:2px 0 5px;background-size:300% 200%}
+ .battle-deck .spell-card>strong{font-size:12px!important}.battle-deck .spell-card>small{font-size:8px;margin:2px 0 4px}
+ .battle-deck .card-effect{min-height:23px;padding-top:4px;font-size:8px!important}
+ .battle-deck .hand-instruction{font-size:10px!important}
+}

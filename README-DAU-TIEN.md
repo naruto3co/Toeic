@@ -17,15 +17,17 @@ sudo docker compose up -d
 
 Mở `http://IP_SERVER:8080`. Xem `pixel-arena-latest/README.md` để đổi cổng, cấu hình proxy và chuyển tiến độ cũ.
 
-## 2. toeic-selfhost — ứng dụng có backend/database, phiên bản 1.3.3
+## 2. toeic-selfhost — ứng dụng có backend/database, phiên bản 1.3.4
 
 Có backend Node.js, database SQLite, tài khoản đăng ký/đăng nhập, hồ sơ lưu trên server, trang admin, flashcard, bài luyện, ghép thẻ 8×8, robot, thẻ bài đánh boss pixel và công cụ sao lưu / tạo admin.
+
+Bản 1.3.4 thêm nút toàn màn hình/F11 và bố cục vừa màn hình dọc/ngang cho cả robot lẫn đánh boss. Trình duyệt không hỗ trợ fullscreen dùng chế độ mở rộng vùng nhìn.
 
 Bản 1.3.3 tăng hạn phiên đăng nhập mới lên 365 ngày cho cả cookie và database. Cần đăng xuất/đăng nhập lại một lần sau khi cập nhật để nhận hạn mới; tài khoản và dữ liệu học giữ nguyên.
 
 Bản 1.3.2 bổ sung kiểm tra Referer cùng origin nếu request thiếu Origin và ghi log chẩn đoán khi nguồn bị từ chối; vẫn giữ kiểm tra Origin/CSRF. URL mở trên máy tính và điện thoại phải trùng `PUBLIC_ORIGIN`. Chưa xác minh request trên iPhone thực tế; xem hướng dẫn `origin_rejected` trong README của backend.
 
-**Bản này cũ hơn giao diện Pixel Arena ở trên:** chưa có bản đồ 50 màn, các mức câu hỏi mới, cơ chế từ khó và các sửa giao diện/fullscreen mới nhất của demo. Các cập nhật đó chưa được ghép vào backend; không ghi đè các file demo vào `public/` rồi coi là đã tích hợp.
+**Bản này vẫn chưa có bản đồ 50 màn, các mức câu hỏi và cơ chế từ khó mới của demo.** Riêng toàn màn hình và bố cục điện thoại cho hai game chiến thuật đã được bổ sung ở bản 1.3.4; các phần còn lại chưa được ghép vào backend; không ghi đè các file demo vào `public/` rồi coi là đã tích hợp.
 
 Triển khai trên Ubuntu có Docker Compose:
 
