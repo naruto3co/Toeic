@@ -17,9 +17,11 @@ sudo docker compose up -d
 
 Mở `http://IP_SERVER:8080`. Xem `pixel-arena-latest/README.md` để đổi cổng, cấu hình proxy và chuyển tiến độ cũ.
 
-## 2. toeic-selfhost — ứng dụng có backend/database, phiên bản 1.3.2
+## 2. toeic-selfhost — ứng dụng có backend/database, phiên bản 1.3.3
 
 Có backend Node.js, database SQLite, tài khoản đăng ký/đăng nhập, hồ sơ lưu trên server, trang admin, flashcard, bài luyện, ghép thẻ 8×8, robot, thẻ bài đánh boss pixel và công cụ sao lưu / tạo admin.
+
+Bản 1.3.3 tăng hạn phiên đăng nhập mới lên 365 ngày cho cả cookie và database. Cần đăng xuất/đăng nhập lại một lần sau khi cập nhật để nhận hạn mới; tài khoản và dữ liệu học giữ nguyên.
 
 Bản 1.3.2 bổ sung kiểm tra Referer cùng origin nếu request thiếu Origin và ghi log chẩn đoán khi nguồn bị từ chối; vẫn giữ kiểm tra Origin/CSRF. URL mở trên máy tính và điện thoại phải trùng `PUBLIC_ORIGIN`. Chưa xác minh request trên iPhone thực tế; xem hướng dẫn `origin_rejected` trong README của backend.
 

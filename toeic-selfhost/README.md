@@ -55,7 +55,7 @@ Trong `.env`, đặt `PUBLIC_ORIGIN=http://localhost:8081`. Trên chính server,
 
 SQLite là database quan hệ nằm trong volume `toeic_data`. Các bảng gồm `users`, `profiles`, `sessions`, `audit_log`, `login_limits` và `schema_migrations`. Tiến độ gắn với ID người dùng lấy từ phiên đăng nhập ở server; gửi tên người khác trong request không cho phép đọc hoặc ghi hồ sơ của họ.
 
-Mật khẩu được băm scrypt với salt ngẫu nhiên. Cookie phiên có HttpOnly, SameSite=Strict và Secure khi origin là HTTPS; token phiên chỉ được lưu dưới dạng hash trong database. Phiên có hạn tối đa 7 ngày. Các thao tác ghi kiểm tra Origin và CSRF token. Có giới hạn thử đăng nhập; chặn tài khoản hoặc đổi/reset mật khẩu sẽ thu hồi các phiên liên quan.
+Mật khẩu được băm scrypt với salt ngẫu nhiên. Cookie phiên có HttpOnly, SameSite=Strict và Secure khi origin là HTTPS; token phiên chỉ được lưu dưới dạng hash trong database. Phiên có hạn cố định tối đa 365 ngày kể từ lúc đăng nhập (cookie và database cùng thời hạn). Các thao tác ghi kiểm tra Origin và CSRF token. Có giới hạn thử đăng nhập; chặn tài khoản hoặc đổi/reset mật khẩu sẽ thu hồi các phiên liên quan.
 
 Trình duyệt giữ bản đệm tiến độ để tiếp tục đồng bộ nếu mất mạng trong lúc học. Không giữ mật khẩu/token đăng nhập trong localStorage. Phải kết nối server để đăng nhập mới. Dữ liệu học trên thiết bị dùng chung vẫn có thể còn trong bộ nhớ trình duyệt; dùng tài khoản hệ điều hành/trình duyệt riêng nếu cần tách dữ liệu tại máy.
 
@@ -97,6 +97,14 @@ sudo docker compose logs --since=3m app | grep origin_rejected
 `origin_mismatch` / `referer_mismatch` chỉ ra URL khác cấu hình; `missing_source` là thiếu nguồn có thể kiểm chứng; `invalid_origin` là Origin không hợp lệ; `cross_site` là Fetch Metadata đánh dấu khác site. Đặt `PUBLIC_ORIGIN` đúng giao thức + hostname + cổng và dùng cùng URL trên máy tính, điện thoại. Sau khi sửa `.env`, chạy `sudo docker compose up -d --force-recreate`; sau khi sửa code, chạy `sudo docker compose up -d --build`.
 
 Bản sửa có kiểm tra tự động cho đăng nhập và lưu hồ sơ khi thiếu Origin nhưng Referer hợp lệ, đồng thời kiểm tra các trường hợp bị chặn. Chưa xác minh request từ iPhone của người vận hành, nên không khẳng định mọi lỗi Safari đã được giải quyết. Không cần xóa database hoặc reset tài khoản khi cập nhật.
+
+## Phiên đăng nhập một năm (v1.3.3)
+
+- Phiên mới có hạn **365 ngày** (31.536.000 giây), áp dụng cho cả học viên và admin. Hạn tính từ lúc đăng nhập, không tự kéo dài mỗi lần mở trang.
+- Cookie trình duyệt và `sessions.expires_at` trong SQLite dùng chung một thời hạn. Đổi mật khẩu thành công cũng tạo phiên mới với hạn 365 ngày.
+- Sau khi nâng cấp, **đăng xuất rồi đăng nhập lại một lần** để nhận cookie và phiên mới. Phiên được tạo trước bản cập nhật vẫn giữ hạn cũ; không gia hạn hàng loạt trong database.
+- Đăng xuất, đặt lại/đổi mật khẩu, khóa tài khoản hoặc admin thu hồi phiên vẫn có hiệu lực ngay. Xóa cookie/dữ liệu trình duyệt cũng có thể yêu cầu đăng nhập lại sớm hơn.
+- Không cần đổi `.env` hoặc schema database. Cập nhật mã rồi chạy `sudo docker compose up -d --build`, giữ nguyên `PUBLIC_ORIGIN=https://learn.datngoc.lol` nếu đó là địa chỉ thực tế bạn dùng.
 
 ## Sao lưu và khôi phục
 

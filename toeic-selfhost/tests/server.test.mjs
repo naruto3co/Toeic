@@ -19,6 +19,24 @@ async function fixture(options={}){
  return {...app,directory,dbPath,call,login,auth,admin,async cleanup(){await app.close();rmSync(directory,{recursive:true,force:true});}};
 }
 
+test('persistent login lasts exactly 365 days in both cookie and database, then expires',async t=>{
+ const f=await fixture();let now=Date.UTC(2026,9,27),year=365*24*60*60*1000;
+ t.mock.method(Date,'now',()=>now);
+ try{
+  const loggedIn=await f.login();assert.equal(loggedIn.status,200);
+  assert.match(loggedIn.headers.get('set-cookie'),/(?:^|; )Max-Age=31536000(?:;|$)/);
+  const expires=f.db.prepare('SELECT expires_at FROM sessions WHERE user_id=?').get(f.admin.id).expires_at;
+  assert.equal(expires,now+year);
+  now+=8*24*60*60*1000;
+  assert.equal((await f.call('/api/auth/session',{cookie:loggedIn.cookie})).status,200);
+  now=expires-1;
+  assert.equal((await f.call('/api/auth/session',{cookie:loggedIn.cookie})).status,200);
+  assert.equal(f.db.prepare('SELECT expires_at FROM sessions WHERE user_id=?').get(f.admin.id).expires_at,expires);
+  now=expires;
+  assert.equal((await f.call('/api/auth/session',{cookie:loggedIn.cookie})).status,401);
+ }finally{t.mock.restoreAll();await f.cleanup();}
+});
+
 test('authenticated users, forced password changes, database ownership and admin roles',async()=>{
  const f=await fixture();try{
   assert.equal((await f.call('/api/profile/state')).status,401);
@@ -29,6 +47,7 @@ test('authenticated users, forced password changes, database ownership and admin
   const temporary=await f.login('learner');assert.equal(temporary.body.user.mustChangePassword,true);assert.equal(temporary.body.state,undefined);
   assert.equal((await f.call('/api/profile/state',{cookie:temporary.cookie})).status,403);
   r=await f.call('/api/auth/password',f.auth(temporary,'POST',{currentPassword:password,password:'My-new-password-2026!'}));assert.equal(r.status,200);assert.equal(r.body.user.mustChangePassword,false);
+  assert.match(r.headers.get('set-cookie'),/(?:^|; )Max-Age=31536000(?:;|$)/);
   const learner={cookie:r.headers.get('set-cookie').split(';')[0],csrf:r.body.csrf};
   assert.equal((await f.call('/api/auth/session',{cookie:temporary.cookie})).status,401);
   assert.equal((await f.call('/api/admin/users',{cookie:learner.cookie})).status,403);
@@ -56,7 +75,7 @@ test('CSRF, origin validation, input validation, logout, expired sessions and lo
   assert.equal((await f.call('/api/admin/users',f.auth(admin,'POST',{...data,password:'short'}))).status,400);
   assert.equal((await f.call('/api/admin/users',f.auth(admin,'POST',{...data,username:"x'; DROP TABLE users;--"}))).status,400);
   assert.equal((await f.call('/api/profile/state',f.auth(admin,'PUT',{revision:0,mutation:'test-mutation-0002',state:{}}))).status,400);
-  assert.equal((await f.call('/api/auth/logout',f.auth(admin,'POST',{}))).status,200);assert.equal((await f.call('/api/auth/session',{cookie:admin.cookie})).status,401);
+  const loggedOut=await f.call('/api/auth/logout',f.auth(admin,'POST',{}));assert.equal(loggedOut.status,200);assert.match(loggedOut.headers.get('set-cookie'),/(?:^|; )Max-Age=0(?:;|$)/);assert.equal((await f.call('/api/auth/session',{cookie:admin.cookie})).status,401);
   const again=await f.login();f.db.prepare('UPDATE sessions SET expires_at=0').run();assert.equal((await f.call('/api/auth/session',{cookie:again.cookie})).status,401);
   for(let i=0;i<15;i++)assert.equal((await f.login('unknown','not-a-valid-password')).status,401);
   assert.equal((await f.login('unknown','not-a-valid-password')).status,429);
