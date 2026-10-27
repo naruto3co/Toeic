@@ -55,7 +55,7 @@ Trong `.env`, đặt `PUBLIC_ORIGIN=http://localhost:8081`. Trên chính server,
 
 SQLite là database quan hệ nằm trong volume `toeic_data`. Các bảng gồm `users`, `profiles`, `sessions`, `audit_log`, `login_limits` và `schema_migrations`. Tiến độ gắn với ID người dùng lấy từ phiên đăng nhập ở server; gửi tên người khác trong request không cho phép đọc hoặc ghi hồ sơ của họ.
 
-Mật khẩu được băm scrypt với salt ngẫu nhiên. Cookie phiên có HttpOnly, SameSite=Strict và Secure khi origin là HTTPS; token phiên chỉ được lưu dưới dạng hash trong database. Phiên có hạn tối đa 7 ngày. Các thao tác ghi kiểm tra Origin và CSRF token. Có giới hạn thử đăng nhập; chặn tài khoản hoặc đổi/reset mật khẩu sẽ thu hồi các phiên liên quan.
+Mật khẩu được băm scrypt với salt ngẫu nhiên. Cookie phiên có HttpOnly, SameSite=Strict và Secure khi origin là HTTPS; token phiên chỉ được lưu dưới dạng hash trong database. Phiên có hạn cố định tối đa 365 ngày kể từ lúc đăng nhập (cookie và database cùng thời hạn). Các thao tác ghi kiểm tra Origin và CSRF token. Có giới hạn thử đăng nhập; chặn tài khoản hoặc đổi/reset mật khẩu sẽ thu hồi các phiên liên quan.
 
 Trình duyệt giữ bản đệm tiến độ để tiếp tục đồng bộ nếu mất mạng trong lúc học. Không giữ mật khẩu/token đăng nhập trong localStorage. Phải kết nối server để đăng nhập mới. Dữ liệu học trên thiết bị dùng chung vẫn có thể còn trong bộ nhớ trình duyệt; dùng tài khoản hệ điều hành/trình duyệt riêng nếu cần tách dữ liệu tại máy.
 
@@ -83,6 +83,37 @@ Nâng cấp: sao lưu, cập nhật mã nguồn rồi chạy `docker compose up 
 Luật chơi, cách lưu và hướng dẫn cập nhật: [docs/GAMES.md](docs/GAMES.md). Nguồn tài sản đồ họa: [docs/ART.md](docs/ART.md).
 
 **v1.3.1:** màn đánh boss chuyển sang pixel art: pháp sư, ba tạo hình boss riêng, đấu trường dưới trăng, sáu hình kỹ năng, khung thẻ/HP kiểu retro và hiệu ứng phép theo từng kỹ năng. Có chế độ giảm chuyển động theo thiết bị. Dùng tiếp hồ sơ và ván đang lưu hiện có; không có thay đổi schema database. Chi tiết ảnh và prompt: [docs/PIXEL-ART.md](docs/PIXEL-ART.md).
+
+## Kiểm tra nguồn đăng nhập (v1.3.2)
+
+Nếu request ghi dữ liệu không có header `Origin`, server kiểm tra origin của `Referer` và chỉ chấp nhận khi trùng chính xác `PUBLIC_ORIGIN`. Nếu có `Origin`, giá trị đó phải hợp lệ và trùng; giá trị rỗng, `null` hoặc khác origin không được dùng Referer để bỏ qua. Request thiếu cả hai bằng chứng hoặc có `Sec-Fetch-Site: cross-site` vẫn bị từ chối. Kiểm tra CSRF, cookie, mật khẩu và database giữ nguyên.
+
+Khi bị từ chối, server ghi một dòng JSON `origin_rejected` chỉ chứa mã lý do và origin; không ghi mật khẩu, cookie, token, đường dẫn hoặc query của Referer. Sau khi thử đăng nhập một lần, xem:
+
+```bash
+sudo docker compose logs --since=3m app | grep origin_rejected
+```
+
+`origin_mismatch` / `referer_mismatch` chỉ ra URL khác cấu hình; `missing_source` là thiếu nguồn có thể kiểm chứng; `invalid_origin` là Origin không hợp lệ; `cross_site` là Fetch Metadata đánh dấu khác site. Đặt `PUBLIC_ORIGIN` đúng giao thức + hostname + cổng và dùng cùng URL trên máy tính, điện thoại. Sau khi sửa `.env`, chạy `sudo docker compose up -d --force-recreate`; sau khi sửa code, chạy `sudo docker compose up -d --build`.
+
+Bản sửa có kiểm tra tự động cho đăng nhập và lưu hồ sơ khi thiếu Origin nhưng Referer hợp lệ, đồng thời kiểm tra các trường hợp bị chặn. Chưa xác minh request từ iPhone của người vận hành, nên không khẳng định mọi lỗi Safari đã được giải quyết. Không cần xóa database hoặc reset tài khoản khi cập nhật.
+
+## Toàn màn hình cho hai game chiến thuật (v1.3.4)
+
+- **Biệt đội Neon** và **Long Vương Nhật Thực** đều có nút **Toàn màn hình** ở thanh công cụ trong trận. Trên máy tính có thể dùng F11; Esc thoát chế độ mở rộng/native, còn toàn màn hình do trình duyệt F11 điều khiển thì dùng F11 để thoát.
+- Chỉ phần game chiếm màn hình khi mở rộng; thanh bên, thanh trên và chân trang được ẩn. Thoát trận, đổi mục học hoặc đăng xuất sẽ khôi phục giao diện web.
+- Fullscreen dùng phần tử ứng dụng cố định, không dùng khung trận bị thay mỗi khi trả lời/chuyển lượt. Nếu API không hỗ trợ, bị từ chối hoặc trình xem nhúng không cho toàn màn hình, game vẫn mở rộng trong vùng nhìn hiện có.
+- Điện thoại tự chuyển sang bố cục vừa vùng nhìn: màn hình dọc xếp cảnh và lựa chọn theo chiều dọc; màn hình ngang đặt cạnh nhau. Chiều cao được cập nhật khi đổi hướng/thanh trình duyệt thay đổi, có chừa vùng tai thỏ. Nội dung giải thích/kết quả quá dài cuộn trong bảng riêng.
+- Đã kiểm tra giao diện trong trình duyệt với các vùng nhìn 390×844, 375×667 và 844×390. Chưa kiểm tra trên iPhone/Safari vật lý; vùng nhìn mở rộng không thể ẩn thanh trình duyệt nếu thiết bị không hỗ trợ Fullscreen API.
+- Sau khi cập nhật mã, chạy `sudo docker compose up -d --build` trong đúng thư mục đang triển khai rồi tải lại trang. Giữ nguyên `.env`, cấu hình Compose và volume dữ liệu. Phiên đăng nhập 365 ngày của bản 1.3.3 vẫn được giữ.
+
+## Phiên đăng nhập một năm (v1.3.3)
+
+- Phiên mới có hạn **365 ngày** (31.536.000 giây), áp dụng cho cả học viên và admin. Hạn tính từ lúc đăng nhập, không tự kéo dài mỗi lần mở trang.
+- Cookie trình duyệt và `sessions.expires_at` trong SQLite dùng chung một thời hạn. Đổi mật khẩu thành công cũng tạo phiên mới với hạn 365 ngày.
+- Sau khi nâng cấp, **đăng xuất rồi đăng nhập lại một lần** để nhận cookie và phiên mới. Phiên được tạo trước bản cập nhật vẫn giữ hạn cũ; không gia hạn hàng loạt trong database.
+- Đăng xuất, đặt lại/đổi mật khẩu, khóa tài khoản hoặc admin thu hồi phiên vẫn có hiệu lực ngay. Xóa cookie/dữ liệu trình duyệt cũng có thể yêu cầu đăng nhập lại sớm hơn.
+- Không cần đổi `.env` hoặc schema database. Cập nhật mã rồi chạy `sudo docker compose up -d --build`, giữ nguyên `PUBLIC_ORIGIN=https://learn.datngoc.lol` nếu đó là địa chỉ thực tế bạn dùng.
 
 ## Sao lưu và khôi phục
 

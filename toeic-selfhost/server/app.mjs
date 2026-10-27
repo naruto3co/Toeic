@@ -5,6 +5,7 @@ import {join} from 'node:path';
 import {randomBytes} from 'node:crypto';
 import {openDatabase,transaction,createUser,audit,safeUser,snapshot} from './database.mjs';
 import {normalizeAccount,validateProgress} from './progress.ts';
+import {checkRequestOrigin,originDiagnostic} from './request-origin.mjs';
 import {HttpError,passwordPolicy,hashPassword,verifyPassword,sessionFrom,newSession,sessionCookie,digest,equal,loginLimit} from './security.mjs';
 
 const PUBLIC=fileURLToPath(new URL('../public/',import.meta.url));
@@ -35,7 +36,8 @@ export async function createApp({dbPath=process.env.DB_PATH||'data/toeic.sqlite'
    }
    let body={};
    if(['POST','PUT','PATCH','DELETE'].includes(method)){
-    if(req.headers.origin!==origin||req.headers['sec-fetch-site']==='cross-site')throw new HttpError(403,'Nguồn yêu cầu không hợp lệ.');
+    const source=checkRequestOrigin(req.headers,origin);
+    if(!source.ok){console.warn(JSON.stringify(originDiagnostic(req.headers,origin,source.reason)));throw new HttpError(403,'Nguồn yêu cầu không hợp lệ.');}
     if(!(req.headers['content-type']||'').startsWith('application/json'))throw new HttpError(415,'Cần gửi dữ liệu JSON.');
     let length=0,chunks=[];for await(const chunk of req){length+=chunk.length;if(length>524288)throw new HttpError(413,'Dữ liệu quá lớn.');chunks.push(chunk);}
     try{body=JSON.parse(Buffer.concat(chunks).toString());}catch{throw new HttpError(400,'JSON không hợp lệ.');}

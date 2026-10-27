@@ -79,3 +79,16 @@ test('actual controller auto advances after 2 seconds, waits on mistakes, pauses
 test('controller records a completed battle once and saves a tombstone across reload',()=>{
  let s=create('boss');s.heroHp=1;s.phase='counter';s.feedback={wordId:null,correct:false,effect:'Tấn công'};s.heroHp=0;const initial=emptyProgress();initial.battleDrafts.boss=s;const h=ui(initial);h.ctx.BattleGames.start(h.host,'boss');h.click({battle:'resume'});h.advance(1000);assert.equal(h.state.battleDrafts.boss.ended,true);assert.equal(Object.keys(h.state.games.history).length,1);h.ctx.BattleGames.render(h.host);h.ctx.BattleGames.checkpoint();assert.equal(Object.keys(h.state.games.history).length,1);validateProgress(h.state);
 });
+
+
+test('both tactical games wire fullscreen controls, keep a layout region and restore on exit',()=>{
+ for(const mode of ['robot','boss']){
+  const h=ui(),active=[];
+  h.ctx.GameScreen={control:()=>'<button data-screen-toggle>Toàn màn hình</button>',setActive:value=>active.push(value)};
+  h.ctx.BattleGames.start(h.host,mode);
+  assert.match(h.host.innerHTML,/data-screen-toggle/);assert.match(h.host.innerHTML,/class="battle-layout /);
+  assert.match(h.host.innerHTML,/class="battle-deck"/);assert.equal(active.at(-1),true);
+  h.click({battle:'pause'});assert.match(h.host.innerHTML,/pause-screenbar/);
+  h.click({battle:'exit'});assert.equal(active.at(-1),false);assert.equal(h.ctx.BattleGames.isActive(),false);
+ }
+});
